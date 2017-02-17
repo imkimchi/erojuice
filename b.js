@@ -3,11 +3,13 @@ const async = require('async');
 const mongoose = require('mongoose');
 const CronJob = require('cron').CronJob;
 mongoose.Promise = global.Promise;
+
 const optForReddit = {
   method: 'GET',
   uri: 'https://www.reddit.com/domain/eroshare.com/new.json',
   json: true,
 };
+
 db = mongoose.createConnection('mongodb://localhost/eroshare');
 const Schema = mongoose.Schema;
 const eroInfo = new Schema({

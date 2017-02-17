@@ -14,6 +14,7 @@ const async = require('async');
 const isDeveloping = process.env.NODE_ENV !== 'production';
 const port = isDeveloping ? 3000 : process.env.PORT;
 const app = express();
+mongoose.Promise = global.Promise;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -24,83 +25,61 @@ app.use('/scripts', express.static(__dirname + '/node_modules/bulma/css/'));
 
 console.log("NODE_ENV: ", process.env.NODE_ENV);
 
-db = mongoose.createConnection('mongodb://localhost/eroshare');
-var Schema = mongoose.Schema;
-var eroInfo = new Schema({
-    videoUri: String,
-    date: Number
-});
-var Ero = db.model('post', eroInfo);
-
 let optForReddit = {
     method: 'GET',
     uri: 'https://www.reddit.com/domain/eroshare.com/new.json',
     json: true
 }
-/*
-var job = new CronJob('* * * * *', function() {
-  async.waterfall([
-          function(waterFallcallback) {
-              console.log("1");
-            rp(optForReddit)
-              .then(function(redditJSON) {
-                let posts = redditJSON.data.children;
-                let len = posts.length;
-                let eroJson = [];
-                //make Json inludes albumid and date
-                async.eachSeries(posts, function(item, callback) {
-                    if (isVideo(item.data.url)) {
-                      eroJson.push(getAlbumId(item.data.url));
-                    }
-                    callback();
-                  },
-                  function() {
-                      console.log("eroJson", eroJson);
-                      waterFallcallback(null, eroJson);
-                  });
-              })
-              .catch(function(err) {
-                console.log("쎽스", err);
-              })
-          },
-          function(redditJSON, waterFallcallback) {
-              console.log("2");
-            Ero.find({
-                videoUri: redditJSON[0]
-              }, function(err, docs) {
-                if (!docs.length) {
-                  console.log("업데이트 중이다 이기야");
-                  let optForEroshare = {
-                    method: 'POST',
-                    uri: 'http://localhost:3000/eroapi',
-                    body: {data: redditJSON},
-                    json: true
-                  };
-                  waterFallcallback(null, optForEroshare);
-                } else {console.log("업데이트 안됬따 이기");return;}
-            })
-        },
-        function(optForEroshare, waterFallcallback) {
-            console.log("3");
-            console.log(optForEroshare);
-              rp(optForEroshare)
-                .then(function(status) {
-                  console.log(status);
-                  waterFallcallback(null);
-                })
-                .catch(function(err) {
-                  console.log("업데이트 실패 띠용?!", err);
-                })
-        }],
-        function(err) {
-            console.log("4");
-            //if(err) console.error(err);
-            mongoose.connection.close();
-        });
-});
 
-      job.start();
-      */
+db = mongoose.createConnection('mongodb://localhost/eroshare');
+const Schema = mongoose.Schema;
+const eroInfo = new Schema({
+  videoUri: String,
+  postUri: String,
+  date: Number,
+});
+const Ero = db.model('post', eroInfo);
+
+new CronJob('*/20 * * * * *', () => {
+  async.waterfall([
+    function(waterFallcallback) {
+      rp(optForReddit).then((redditJSON) => {
+        const posts = redditJSON.data.children;
+        const len = posts.length;
+        const eroJson = [];
+        // make Json inludes albumid and date
+        async.eachSeries(posts, (item, callback) => {
+          if (isVideo(item.data.url)) {
+            eroJson.push(getAlbumId(item.data.url));
+          }
+          callback();
+        }, () => {
+            waterFallcallback(null, eroJson);
+        });
+      }).catch((err) => {
+        console.log('Failed to send request to reddit API', err);
+      });
+    },
+    function(redditJSON, waterFallcallback) {
+        const optForEroshare = {
+            method: 'POST',
+            uri: 'http://localhost:3000/eroapi',
+            body: {data: redditJSON},
+            json: true,
+          };
+        rp(optForEroshare).then((status) => {
+            if(status) console.log("[!] Updated Completed!");
+            else console.log("[!] There's nothing new.")
+            waterFallcallback(null);
+        }).catch((err) => {
+            console.log("[!] Failed to send request to eroshare API", err);
+      });
+    }
+  ], (err) => {
+    mongoose.connection.close();
+  });
+}).start();
+
 
 if (isDeveloping) {
     console.log("[!] Running for Development");

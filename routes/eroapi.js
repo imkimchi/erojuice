@@ -4,33 +4,39 @@ const rp = require('request-promise');
 const mongoose = require('mongoose');
 const async = require('async');
 
-mongoose.connect('mongodb://localhost/eroshare');
 mongoose.Promise = global.Promise;
-
-var Schema = mongoose.Schema;
-var eroInfo = new Schema({
-  videoUri: String,
-  date: Number
+//mongoose.connect('mongodb://localhost:27017/eroshare');
+mongoose.connection.on('error', function(err) {
+    console.error('MongoDB error: %s', err);
 });
-var Ero = mongoose.model('post', eroInfo);
+
 let baseURL = 'https://api.eroshare.com/api/v1/albums/';
 var isChanged = false;
+
+
+db = mongoose.createConnection('mongodb://localhost/eroshare');
+const Schema = mongoose.Schema;
+const eroInfo = new Schema({
+  videoUri: String,
+  postUri: String,
+  date: Number,
+});
+const Ero = db.model('post', eroInfo);
 
 router.post('/eroapi', function(req, res) {
   var idArray = req.body.data;
   async.forEachOf(idArray, function(value, key, cb) {
     rp(baseURL + value)
       .then(function(json) {
-          var jsn = JSON.parse(json);
-          updateDB(jsn);
+          //var jsn = JSON.parse(json);
+          updateDB(JSON.parse(json));
         })
-    .catch(function(err) {
-      console.error(err);
-    })
+      .catch(function(err) {
+          console.error("Failed to send eroapi", err);
+        })
     cb();
   }, function() {
       res.send(isChanged);
-      console.log("Real value", isChanged);
       isChanged = false;
   });
 });
@@ -40,25 +46,29 @@ function updateDB(data){
       function(wfcallback) {
           if (data.items[0].type === 'Video') {
               Ero.find({videoUri: data.items[0].url_mp4}, function(err, docs) {
+                  if(err) console.error(err);
                   wfcallback(null, err, docs);
               });
           } else {
               wfcallback(null, "", [1,2]);
           }
-      },
+      }, 
       function(err, docs, wfcallback) {
           if(docs.length) {
               wfcallback(null, false, "exist or image");
           } else {
               var ero = new Ero();
               ero.videoUri = data.items[0].url_mp4;
+              ero.postUri = data.url;
               ero.date = Date.now();
-              ero.save();
+              ero.save(function(err, product) {
+                  if(err) console.error("Failed to save mongo", err);
+                  console.log("Thisis what i updated", product);
+              });
               wfcallback(null, true, "Not exists");
           }
       }
   ], function(err, isChanged, comment) {
-      console.log(isChanged)
       checkChanged(isChanged);
   });
 }
