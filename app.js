@@ -67,6 +67,7 @@ new CronJob('*/20 * * * * *', () => {
             body: {data: redditJSON},
             json: true,
           };
+          console.log(optForEroshare);
         rp(optForEroshare).then((status) => {
             if(status) console.log("[!] Updated Completed!");
             else console.log("[!] There's nothing new.")
@@ -123,7 +124,7 @@ function isVideo(str) {
     let lastString = str.split('/')[3];
     if (lastString === 'i' || lastString.split('.').length > 1) {
         return false;
-    } else {
+    } else if(lastString.length > 7){
         return true;
     }
 }

@@ -32,7 +32,7 @@ router.post('/eroapi', function(req, res) {
           updateDB(JSON.parse(json));
         })
       .catch(function(err) {
-          console.error("Failed to send eroapi", err);
+          console.error("Failed to send eroapi", baseURL+value);
         })
     cb();
   }, function() {
@@ -44,8 +44,10 @@ router.post('/eroapi', function(req, res) {
 function updateDB(data){
   async.waterfall([
       function(wfcallback) {
+          console.log("wf works!");
           if (data.items[0].type === 'Video') {
               Ero.find({videoUri: data.items[0].url_mp4}, function(err, docs) {
+                  console.log("Find workls!");
                   if(err) console.error(err);
                   wfcallback(null, err, docs);
               });
@@ -54,6 +56,7 @@ function updateDB(data){
           }
       }, 
       function(err, docs, wfcallback) {
+          console.log(docs);
           if(docs.length) {
               wfcallback(null, false, "exist or image");
           } else {
