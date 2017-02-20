@@ -48,10 +48,8 @@ router.post('/eroapi', function(req, res) {
 function updateDB(data){
   async.waterfall([
       function(wfcallback) {
-          console.log("wf works!");
           if (data.items[0].type === 'Video') {
               Ero.find({videoId: data.id}, function(err, docs) {
-                  console.log("Find workls!");
                   if(err) console.error(err);
                   wfcallback(null, err, docs);
               });
