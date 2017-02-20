@@ -12,7 +12,7 @@ var eroInfo = new Schema({
 
 var Ero = db.model('post', eroInfo);
 
-router.get('/getdata', function(req, res) {
+router.get('/getData', function(req, res) {
     Ero.find({}, function(err, docs) {
         res.json(docs);
         mongoose.connection.close(function(){

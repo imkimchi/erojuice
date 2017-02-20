@@ -17,10 +17,14 @@ var isChanged = false;
 db = mongoose.createConnection('mongodb://localhost/eroshare');
 const Schema = mongoose.Schema;
 const eroInfo = new Schema({
-  videoUri: String,
-  postUri: String,
-  date: Number,
+    thumbnail: String,
+  videoId: String,
+  title: String,
+  created_at: String,
+  score: Number,
+  subreddit: String
 });
+
 const Ero = db.model('post', eroInfo);
 
 router.post('/eroapi', function(req, res) {
@@ -46,7 +50,7 @@ function updateDB(data){
       function(wfcallback) {
           console.log("wf works!");
           if (data.items[0].type === 'Video') {
-              Ero.find({videoUri: data.items[0].url_mp4}, function(err, docs) {
+              Ero.find({videoId: data.id}, function(err, docs) {
                   console.log("Find workls!");
                   if(err) console.error(err);
                   wfcallback(null, err, docs);
@@ -60,10 +64,16 @@ function updateDB(data){
           if(docs.length) {
               wfcallback(null, false, "exist or image");
           } else {
+              console.log(data);
               var ero = new Ero();
-              ero.videoUri = data.items[0].url_mp4;
-              ero.postUri = data.url;
-              ero.date = Date.now();
+              var reddit = data.reddit_submission;
+              ero.thumbnail = data.items[0].url_thumb;
+              ero.videoId = data.id
+              ero.title = "";
+              ero.created_at = reddit.created_at;
+              ero.score = reddit.score;
+              ero.subreddit = reddit.subreddit;
+              console.log(data);
               ero.save(function(err, product) {
                   if(err) console.error("Failed to save mongo", err);
                   console.log("Thisis what i updated", product);

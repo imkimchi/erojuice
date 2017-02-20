@@ -1,5 +1,9 @@
 require('../node_modules/bulma/css/bulma.css');
 require('./css/aside.css');
-require('./js/bulma.js');
+require('./css/main.css');
+require('./js/fetch.js');
 
-const mongoose = require('mongoose');
+
+fetch('http://localhost:3000/getData')
+  .then(res => console.log(res.json))
+  .catch(err => console.error(err))
