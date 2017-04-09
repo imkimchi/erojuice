@@ -2,8 +2,7 @@
 #app
   app-nav
   .section
-      .container
-        router-view
+    router-view
   app-footer
 </template>
 

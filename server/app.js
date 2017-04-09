@@ -10,7 +10,8 @@ import mongoose from 'mongoose'
 mongoose.Promise = global.Promise;
 
 mongoose
-  .createConnection('mongodb://localhost/eroshare')
+  .connect('mongodb://localhost/eroshare')
+  //.createConnection('mongodb://localhost/eroshare')
   .then(startApp).catch(::console.error)
 
 import routes from './routes'
@@ -24,12 +25,13 @@ function startApp() {
     const dist = path.join(__dirname, '..', 'dist')
     const bpOption = {extendTypes: {json: ['application/x-javascript']}};
 
+    crawler()
+
     app
       .use(logger())
       .use(bodyParser(bpOption))
-      .use(routes)
+      .use(routes())
       .use(serve(dist))
-      .use(crawler())
 
     app.listen(port, () => console.log(`Listening on port ${port}`))
 }

@@ -1,4 +1,4 @@
-function isVideo(str) {
+function isVideo (str) {
     let lastString = str.split('/')[3];
     if (lastString === 'i' || lastString.split('.').length > 1) {
         return false;
@@ -7,16 +7,20 @@ function isVideo(str) {
     }
 }
 
-function getAlbumId(str) {
+function getAlbumId (str) {
     return str.split('/')[3];
 }
 
-async function pushifVideo(posts) {
+async function getUrl (posts) {
     let eroJson = [];
     await posts.forEach((item) => {
+        if(!eroJson.includes(item)) {
             if(isVideo(item.data.url)) {
                 eroJson.push(getAlbumId(item.data.url));
             }
-        })
+        }
+    })
     return eroJson;
 }
+
+export default getUrl

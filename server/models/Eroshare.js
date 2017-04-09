@@ -9,4 +9,4 @@ const schema = mongoose.Schema({
     subreddit: String
 });
 
-export default mongoose.model('post', schema);
+export default mongoose.model('post', schema)

@@ -1,9 +1,9 @@
-import router from 'koa-router'
+import Router from 'koa-router'
 import mongoose from 'mongoose'
 
-import Ero from './models/Eroshare'
+import Ero from '../models/Eroshare'
 
-const router = new Router({ prefix: '/getData'});
+const router = new Router({ prefix: '/video' })
 
 router.get('/', async(ctx, next) => {
     try {
