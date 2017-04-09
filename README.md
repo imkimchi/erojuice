@@ -1,6 +1,5 @@
-# vueapp
-
-> A Vue.js project
+# erojuice
+> A porn site crawled from eroshare
 
 ## Build Setup
 
