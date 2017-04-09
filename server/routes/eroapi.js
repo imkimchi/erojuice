@@ -12,7 +12,7 @@ router.post('/', async (ctx, next) => {
     idArray.forEach(async (value) => {
         try { 
             let eroJson = await rp(baseURL+value)
-            updateDB(JSON.parse(eroJson))
+            updateDB(JSON.parse(eroJson), isChanged)
         } catch (err) { 
             console.error("Failed to send eroapi", baseURL+value)
         }

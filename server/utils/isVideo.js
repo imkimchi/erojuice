@@ -1,1 +1,1 @@
-export default isVideo = data => data.items[0].type === 'Video'
+export default data => data.items[0].type === 'Video'
