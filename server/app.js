@@ -6,20 +6,19 @@ import rp from 'request-promise'
 import logger from 'koa-logger'
 import {cronJob as CronJob} from 'cron'
 
+import config from './config'
+import routes from './routes'
+import crawler from './utils/crawler'
+
 import mongoose from 'mongoose'
 mongoose.Promise = global.Promise;
 
 mongoose
-  .connect('mongodb://localhost/eroshare')
-  //.createConnection('mongodb://localhost/eroshare')
+  .connect(config.MONGODB_URI)
   .then(startApp).catch(::console.error)
 
-import routes from './routes'
-import crawler from './utils/crawler'
 
 function startApp() {
-    console.log(`Connected to database ${mongoose.connection.name}`)
-
     const app = new Koa()
     const port = process.env.PORT || 3000;
     const dist = path.join(__dirname, '..', 'dist')

@@ -30,7 +30,7 @@
       }),
       
       async created () {
-        this.items = await fetch('/video').then(res => res.json())
+        this.items = await fetch('/videos').then(res => res.json())
         this.lines = Math.ceil(this.items.length/4)
       },
 

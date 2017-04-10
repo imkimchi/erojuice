@@ -1,7 +1,9 @@
-import getUrl from './getUrl'
 import rp from 'request-promise'
-import optForReddit from './requestOpt'
 import {CronJob} from 'cron'
+
+import config from './config'
+import optForReddit from './requestOpt'
+import getUrl from './getUrl'
 
 export default () => {
     console.log("[!] Just started to crawl ")
@@ -13,15 +15,15 @@ export default () => {
 
             const optForEroshare = {
                 method: 'POST',
-                uri: 'http://localhost:3000/eroapi',
+                uri: config.LOCALHOST_URI,
                 body: {data: eroJson},
                 json: true
             }
             
             try { 
                 let status = await rp(optForEroshare)
-                //if(status) console.log("[!] Updated Completed!")
-                //else console.log("[!] There's nothing new.")
+                if(status) console.log("[!] Updated Completed!")
+                else console.log("[!] There's nothing new.")
             } catch(err) { 
                 console.error("failed to eroshare")
             }
