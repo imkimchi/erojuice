@@ -1,0 +1,20 @@
+export default [
+    'RedditorCum',
+    'Jerking',
+    'MassiveCock',
+    'ratemycock',
+    'ladybonersgw',
+    'PissOn',
+    'NSFW_DICK_and_Cock',
+    'tinydick',
+    'penis',
+    'FemBoys',
+    'GayWatersports',
+    'jacking',
+    'GayButtsOnly',
+    'CubsGoneWild',
+    'NSFW_Tributes',
+    'AnimeCumtributes',
+    'uphisbutt',
+    ''
+]
