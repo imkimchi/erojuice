@@ -1,26 +1,38 @@
-function isVideo (str) {
-    let lastString = str.split('/')[3];
-    if (lastString === 'i' || lastString.split('.').length > 1) {
-        return false;
-    } else if(lastString.length > 7){
-        return true;
+let FaggotSubReddit = [
+    'RedditorCum',
+    'Jerking',
+    'MassiveCock',
+    'ratemycock',
+    'ladybonersgw',
+    'PissOn',
+    'NSFW_DICK_and_Cock',
+    'tinydick',
+    'penis',
+    'FemBoys',
+    'GayWatersports'
+]
+
+const getAlbumId = str => str.split('/')[3]
+
+function isExist (item, eroJson) {
+    let lastString = getAlbumId(item.data.url)
+    let subreddit = item.data.subreddit
+    
+    if(!eroJson.includes(lastString) && !FaggotSubReddit.includes(subreddit)) {
+        if(lastString.length > 7) return true
+    } else {
+        return false
     }
 }
 
-function getAlbumId (str) {
-    return str.split('/')[3];
-}
-
 async function getUrl (posts) {
-    let eroJson = [];
+    let eroJson = []
     await posts.forEach((item) => {
-        if(!eroJson.includes(item)) {
-            if(isVideo(item.data.url)) {
-                eroJson.push(getAlbumId(item.data.url));
-            }
+        if(isExist(item, eroJson)) {
+            eroJson.push(getAlbumId(item.data.url));
         }
     })
-    return eroJson;
+    return eroJson
 }
 
 export default getUrl

@@ -4,7 +4,7 @@
     .column.is-3.vid(v-for='item in column')
         .panel
           p.is-marginless
-           a(:href='item.videoId')
+           a(:href="'//eroshare.com/'+item.videoId")
              img(:src='item.thumbnail')
           .panel.vidInfo
             .columns.hax-text-centered
@@ -44,10 +44,10 @@
         onInfinite() {
           setTimeout(() => {
             const temp = []
-            for(let i = this.columns; i <= this.list.length + 20; i++) {
+            for(let i = this.columns.length+1; i <= this.columns.length + 7; i++) {
               temp.push(i)
             }
-            this.list = this.this.list.concat(temp)
+            this.columns = this.columns.concat(temp)
             this.$refs = infiniteLoading.$emit('$InfiniteLoading:loaded')
 
           }, 700)
@@ -55,7 +55,7 @@
       },
       
       components: {
-        InfiniteLoading,
+        InfiniteLoading
       },
    }
 </script>

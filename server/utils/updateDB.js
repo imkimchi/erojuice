@@ -15,7 +15,7 @@ function makeParam(data) {
             update: {
                 thumbnail: data.items[0].url_thumb,
                 videoId: data.id,
-                created_at: reddit.created_at,
+                created_at: reddit.created_at || "",
                 score: reddit.score,
                 subreddit: reddit.subreddit,
                 title: ""

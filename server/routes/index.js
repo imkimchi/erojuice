@@ -1,6 +1,6 @@
 import compose from 'koa-compose'
 
-import videoRouter from './video.js'
+import videoRouter from './videos.js'
 import eroRouter from './eroapi.js'
 
 const routes = [

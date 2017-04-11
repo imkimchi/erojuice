@@ -1,7 +1,7 @@
 import rp from 'request-promise'
 import {CronJob} from 'cron'
 
-import config from './config'
+import config from '../config'
 import optForReddit from './requestOpt'
 import getUrl from './getUrl'
 
@@ -19,7 +19,6 @@ export default () => {
                 body: {data: eroJson},
                 json: true
             }
-            
             try { 
                 let status = await rp(optForEroshare)
                 if(status) console.log("[!] Updated Completed!")
