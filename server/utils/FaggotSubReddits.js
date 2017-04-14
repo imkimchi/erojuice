@@ -16,5 +16,17 @@ export default [
     'NSFW_Tributes',
     'AnimeCumtributes',
     'uphisbutt',
-    ''
+    'cumshots',
+    'cumtributes',
+    'GayChubs',
+    'GaybrosGoneWild',
+    'MalesMasturbating',
+    'cock',
+    'manass',
+    'gaynsfw',
+    'MenGW',
+    'gape',
+    'smalldicks',
+    'BHMGoneWild',
+    'realscatguys'
 ]

@@ -1,26 +1,29 @@
-import FaggotSubReddits from './FaggotSubReddits'
+import fagSubs from './FaggotSubReddits'
 
 const getAlbumId = str => str.split('/')[3]
+const isExist = (idArray, videoId) => !idArray.includes(videoId)
+const isFag = sub => !fagSubs.includes(sub)
 
-function isExist (item, eroJson) {
-    let lastString = getAlbumId(item.data.url)
+function filter (item, idArray) {
+    let videoId = getAlbumId(item.data.url)
     let subreddit = item.data.subreddit
-    if(!eroJson.includes(lastString) && !FaggotSubReddits.includes(subreddit)) {
-        if(lastString.length === 8) return true
+    if(isExist(idArray, videoId) && isFag(subreddit)){
+        if(videoId.length === 8) return true
+        else return false
     } else {
         return false
     }
 }
 
+
 async function getUrl (posts) {
-    let eroJson = []
+    let idArray = []
     await posts.forEach((item) => {
-        if(isExist(item, eroJson)) {
-            eroJson.push(getAlbumId(item.data.url))
-            console.log(item.data.subreddit)
+        if(filter(item, idArray)) {
+            idArray.push(getAlbumId(item.data.url))
         }
     })
-    return eroJson
+    return idArray
 }
 
 export default getUrl
