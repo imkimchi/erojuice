@@ -28,5 +28,13 @@ export default [
     'gape',
     'smalldicks',
     'BHMGoneWild',
-    'realscatguys'
+    'realscatguys',
+    'men_in_panties',
+    'Precum',
+    'GoneWildCD',
+    'cummingonfigurines',
+    'BHMGoneWild',
+    'treesgonewild',
+    'mangonewild',
+    ''
 ]

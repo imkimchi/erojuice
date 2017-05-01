@@ -34,6 +34,7 @@ async function updateDB (data, isChanged) {
             await Ero.findOneAndUpdate(param.query, param.update, param.opt)
         } catch (err) {
             console.error("Failed to save mongo", err)
+            console.log("failed", param.update.videoId)
         }
         checkChanged(isChanged)
     }

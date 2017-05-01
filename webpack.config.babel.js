@@ -25,6 +25,11 @@ export default {
     new HtmlPlugin({
       title: 'sex',
       template: 'client/assets/index.pug'
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
     })
   ],
 

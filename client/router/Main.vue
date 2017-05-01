@@ -1,12 +1,12 @@
 <template lang="pug">
 .container
-  .columns(v-for='column in columns')
+  .columns(v-for='column in list')
     .column.is-3.vid(v-for='item in column')
         .panel
           p.is-marginless
            a(:href="'//eroshare.com/'+item.videoId")
-             img(:src='item.thumbnail')
-          .panel.vidInfo
+             img(:src='item.thumbnail' @error="isExist")
+          .panel.vidInfol
             .columns.hax-text-centered
               .column
                 .panel-item.reddit-ups
@@ -14,24 +14,24 @@
                   i.fa.fa-reddit-alien.fa-2x
                 .panel-item.reddit-date
                   i.fa.fa-calendar.fa-2x
-  infinite-loading(:on-infinite='onInfinite', ref='infiniteLoading')
+  infinite-loading(:on-infinite='onInfinite', ref='myRefName')
 </template>
 
 <script>
   import chunk from 'lodash.chunk'
   import InfiniteLoading from 'vue-infinite-loading'
+  let len = 0;
 
   export default {
       name: 'main',
       
       data: () => ({
         items: [],
-        lines: 0,
+        list: []
       }),
       
       async created () {
         this.items = await fetch('/videos').then(res => res.json())
-        this.lines = Math.ceil(this.items.length/4)
       },
 
       computed: {
@@ -44,18 +44,24 @@
         onInfinite() {
           setTimeout(() => {
             const temp = []
-            for(let i = this.columns.length+1; i <= this.columns.length + 7; i++) {
-              temp.push(i)
+            for (let i = len; i <= len + 4; i++) {
+              temp.push(this.columns[i])
             }
-            this.columns = this.columns.concat(temp)
-            this.$refs = infiniteLoading.$emit('$InfiniteLoading:loaded')
+
+            this.list = this.list.concat(temp)
+            this.$refs.myRefName.$emit('$InfiniteLoading:loaded')
+            len += 5
 
           }, 700)
         },
+        isExist() {
+          this.src = '/broken-img.png'
+        }
       },
-      
       components: {
         InfiniteLoading
-      },
+      }
    }
 </script>
+
+function is
