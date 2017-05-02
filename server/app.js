@@ -11,7 +11,7 @@ import routes from './routes'
 import crawler from './utils/crawler'
 
 import mongoose from 'mongoose'
-mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise
 
 mongoose
   .connect(config.MONGODB_URI)
@@ -20,9 +20,9 @@ mongoose
 
 function startApp() {
     const app = new Koa()
-    const port = process.env.PORT || 3000;
+    const port = process.env.PORT || 3000
     const dist = path.join(__dirname, '..', 'dist')
-    const bpOption = {extendTypes: {json: ['application/x-javascript']}};
+    const bpOption = {extendTypes: {json: ['application/x-javascript']}}
 
     crawler()
 
