@@ -36,5 +36,6 @@ export default [
     'BHMGoneWild',
     'treesgonewild',
     'mangonewild',
-    ''
+    'peegonewild',
+    'ChubbyDudes',
 ]

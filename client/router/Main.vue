@@ -14,7 +14,7 @@
                   i.fa.fa-reddit-alien.fa-2x
                 .panel-item.reddit-date
                   i.fa.fa-calendar.fa-2x
-  infinite-loading(:on-infinite='onInfinite', ref='myRefName')
+  infinite-loading(:on-infinite='onInfinite', ref='infiniteLoad')
 </template>
 
 <script>
@@ -49,7 +49,7 @@
             }
 
             this.list = this.list.concat(temp)
-            this.$refs.myRefName.$emit('$InfiniteLoading:loaded')
+            this.$refs.infiniteLoad.$emit('$InfiniteLoading:loaded')
             len += 5
 
           }, 700)
