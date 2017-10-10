@@ -23,7 +23,6 @@ export default {
   plugins: [
     new ExtractTextPlugin('bundle.css'),
     new HtmlPlugin({
-      title: 'sex',
       template: 'client/assets/index.pug'
     }),
     new webpack.DefinePlugin({
